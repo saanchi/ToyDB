@@ -1,7 +1,6 @@
 package table;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,6 +41,29 @@ implements Serializable {
     
     public Set<String> getColumnNames() {
         return columns.keySet();
+    }
+    
+	public int getSizeOfData() {
+    	int sizeOfRow = 0;
+    	for (ColumnType columnType : columns.values()) {
+    		switch (columnType) {
+    		case ID:
+    		case INTEGER:
+    		case STRING:
+    			sizeOfRow += 4;
+    			break;
+    		case CHARACTER:
+    			sizeOfRow += 1;
+    			break;
+    		}
+    	}
+    	return sizeOfRow;
+    }
+    
+    public int incrementId() {
+    	int tempId = id;
+    	id++;
+    	return tempId;
     }
     
     public static Table load(String name)

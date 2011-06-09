@@ -1,17 +1,23 @@
 package demo;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import table.ColumnType;
 import table.Table;
+import table.TableData;
 
 public class Demo {
 	public static void main(String args[])
 	throws IOException, ClassNotFoundException {
-		createSimpleDatabase();
+		//createSimpleDatabase();
 		
-		Table userTable = loadSimpleDatabase();
-		System.out.println(userTable.getColumnNames());
+		//Table userTable = loadSimpleDatabase();
+		//System.out.println(userTable.getColumnNames());
+		
+		saveData();
+		System.out.println(loadSimpleDatabase().getSizeOfData());
 	}
 
 	private static void createSimpleDatabase()
@@ -26,5 +32,16 @@ public class Demo {
 	private static Table loadSimpleDatabase()
 	throws IOException, ClassNotFoundException {
 		return Table.load("user");
+	}
+	
+	private static void saveData()
+	throws IOException, ClassNotFoundException {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("firstName", 1);
+		data.put("lastName", 2);
+		
+		Table userTable = loadSimpleDatabase();
+		TableData row = new TableData(userTable);
+		row.createNew(data);
 	}
 }
