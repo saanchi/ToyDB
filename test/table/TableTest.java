@@ -12,9 +12,7 @@ public class TableTest
 extends TestCase {
     public void testSeraliziable()
     throws IOException, ClassNotFoundException {
-        Table table = new Table();
-        
-        table.setFileName("test");
+        Table table = new Table("test");
         
         table.addColumn("name", ColumnType.INTEGER);
         table.addColumn("test", ColumnType.CHARACTER);
@@ -29,6 +27,6 @@ extends TestCase {
         ObjectInputStream in = new ObjectInputStream(fin);
         
         Table table2 = (Table) in.readObject();
-        System.out.println(table2.getFileName());
+        System.out.println(table2.getName());
     }
 }
