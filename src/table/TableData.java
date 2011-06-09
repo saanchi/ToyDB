@@ -1,13 +1,16 @@
 package table;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,6 +49,27 @@ public class TableData {
         out.close();
     }
     
-    public void load(int id) {
+    private Map<String, Object> loadData(int id)
+    throws IOException {
+    	FileReader fr = new FileReader("resources/" + tableHeader.getName() + ".dta");
+    	BufferedReader in = new BufferedReader(fr);
+    	
+    	Map<String, Object> data = new HashMap<String, Object>();
+    	
+    	char[] buffer = new char[4];
+    	for (Object field : tableHeader.getColumnNames()) {
+    		in.skip(tableHeader.getSizeOfData()*id);
+    		in.read(buffer, 0, 4);
+    		data.put("test", Helper.charArrayToInt(buffer));
+    	}
+        in.close();
+        
+        return data;
     }
+    
+    public Map<String, Object> load(int id)
+    throws IOException {
+    	return loadData(id);
+    }
+    
 }

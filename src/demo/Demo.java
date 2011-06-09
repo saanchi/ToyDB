@@ -16,8 +16,9 @@ public class Demo {
 		//Table userTable = loadSimpleDatabase();
 		//System.out.println(userTable.getColumnNames());
 		
-		saveData();
-		System.out.println(loadSimpleDatabase().getSizeOfData());
+		//saveData();
+		
+		loadData();
 	}
 
 	private static void createSimpleDatabase()
@@ -43,5 +44,13 @@ public class Demo {
 		Table userTable = loadSimpleDatabase();
 		TableData row = new TableData(userTable);
 		row.createNew(data);
+	}
+	
+	private static void loadData()
+	throws IOException, ClassNotFoundException {
+		Table userTable = loadSimpleDatabase();
+		TableData row = new TableData(userTable);
+		Map<String, Object> data = row.load(2);
+		System.out.println(data.values());
 	}
 }

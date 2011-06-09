@@ -10,4 +10,8 @@ public class Helper {
 		
 		return charArray;
 	}
+	
+	public static int charArrayToInt(char[] charArray) {
+		return charArray[0] << 8 + charArray[1] << 8 + charArray[2] << 8 + charArray[3];
+	}
 }
