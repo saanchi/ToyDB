@@ -49,6 +49,7 @@ public class TableData {
 				
 				FileOutputStream stringFout = new FileOutputStream("resources/" + tableHeader.getName() + ".str", true);
 				stringFout.write(((String)dataValue).getBytes());
+				stringFout.close();
 				
 				fout.write(Helper.intToByteArray(position));
 				fout.write(Helper.intToByteArray(size));
@@ -80,6 +81,8 @@ public class TableData {
 				stringFin.skip(position);
 				byte[] string = new byte[size];
 				stringFin.read(string);
+				stringFin.close();
+				
 				data.put(field.getKey(), new String(string));
 			}
 		}

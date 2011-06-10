@@ -73,12 +73,21 @@ implements Serializable {
 		return tempId;
 	}
 
+	public int getId() {
+		return id;
+	}
+	
 	public static Table load(String name)
 	throws IOException, ClassNotFoundException {
 		FileInputStream fin = new FileInputStream("resources/" + name + ".hdr");
 		ObjectInputStream in = new ObjectInputStream(fin);
 
-		return (Table)in.readObject();
+		Table table = (Table)in.readObject();
+		
+		in.close();
+		fin.close();
+		
+		return table;
 	}
 
 	public static void save(Table table)
@@ -88,6 +97,7 @@ implements Serializable {
 		out.writeObject(table);
 		out.flush();
 		out.close();
+		fout.close();
 	}
 	
 	public static void truncate(Table table) {

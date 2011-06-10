@@ -13,14 +13,14 @@ public class Demo {
 	throws IOException, ClassNotFoundException {
 		//createSimpleDatabase();
 
-		//Table userTable = loadSimpleDatabase();
-		// System.out.println(userTable.getColumnNames());
+		Table userTable = loadSimpleDatabase();
+		System.out.println(userTable.getId());
 
-		//saveData(100, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		//saveData(200, 200);
-		//saveData(1105410, 1235641);
+		//for (int i = 0; i < 10000; i++) {
+		//	saveData("Justin", "Fletcher");
+		//}
 		
-		loadData(0);
+		//loadData(0);
 		
 		//truncateTable();
 	}
@@ -28,7 +28,7 @@ public class Demo {
 	private static void createSimpleDatabase()
 	throws IOException {
 		Table userTable = new Table("user");
-		userTable.addColumn("firstName", ColumnType.INTEGER);
+		userTable.addColumn("firstName", ColumnType.STRING);
 		userTable.addColumn("lastName", ColumnType.STRING);
 
 		Table.save(userTable);
@@ -39,7 +39,7 @@ public class Demo {
 		return Table.load("user");
 	}
 
-	private static void saveData(int fName, String lName)
+	private static void saveData(String fName, String lName)
 	throws IOException, ClassNotFoundException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("firstName", fName);
