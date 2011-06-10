@@ -15,6 +15,8 @@ public class Server {
 	public Server()
 	throws IOException {
 		clientPool = new Pool();
+		Thread thread = new Thread(clientPool);
+		thread.start();
 	}
 	
 	public void createTable(Table table) {

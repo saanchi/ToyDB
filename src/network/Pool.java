@@ -1,19 +1,43 @@
 package network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Pool {
+public class Pool
+extends Thread {
 	ServerSocket socket;
+	private Set<Socket> connectedClients = new HashSet<Socket>();
 	private Set<String> clients = new HashSet<String>();
 	
 	public Pool()
 	throws IOException {
 		socket = new ServerSocket(1234);
+	}
+	
+	public void run() {
+		while (true) {
+			try {
+				Socket accepted = socket.accept();
+				connectedClients.add(accepted);
+				System.out.println(connectedClients.size() + " clients connected");
+				BufferedReader in = new BufferedReader(new InputStreamReader(accepted.getInputStream()));
+				
+				// TODO: move this into a thread
+				String inputLine;
+				while ((inputLine = in.readLine()) != null) {
+					System.out.println(inputLine);
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void testAll() {
