@@ -11,18 +11,28 @@ import table.TableData;
 public class Demo {
 	public static void main(String args[])
 	throws IOException, ClassNotFoundException {
-		//createSimpleDatabase();
+		long startTime = System.nanoTime();
+		createSimpleDatabase();
+		System.out.println((System.nanoTime() - startTime) / 1000000 + "ms to create database");
 
-		Table userTable = loadSimpleDatabase();
-		System.out.println(userTable.getId());
+		//Table userTable = loadSimpleDatabase();
+		//System.out.println(userTable.getId());
 
-		//for (int i = 0; i < 10000; i++) {
-		//	saveData("Justin", "Fletcher");
-		//}
+		startTime = System.nanoTime();
+		for (int i = 0; i < 10000; i++) {
+			saveData("Justin", "Fletcher");
+		}
+		System.out.println((System.nanoTime() - startTime) / 1000000 + "ms to insert 10000 rows into database");
 		
-		//loadData(0);
+		startTime = System.nanoTime();
+		for (int i = 0; i < 10000; i++) {
+			loadData(i);
+		}
+		System.out.println((System.nanoTime() - startTime) / 1000000 + "ms to load 10000 rows from database");
 		
-		//truncateTable();
+		startTime = System.nanoTime();
+		truncateTable();
+		System.out.println((System.nanoTime() - startTime) / 1000000 + "ms to truncate database");
 	}
 
 	private static void createSimpleDatabase()
@@ -50,12 +60,11 @@ public class Demo {
 		row.createNew(data);
 	}
 
-	private static void loadData(int id)
+	private static Map<String, Object> loadData(int id)
 	throws IOException, ClassNotFoundException {
 		Table userTable = loadSimpleDatabase();
 		TableData row = new TableData(userTable);
-		Map<String, Object> data = row.load(id);
-		System.out.println(data);
+		return row.load(id);
 	}
 	
 	public static void truncateTable()
