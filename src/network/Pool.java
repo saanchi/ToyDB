@@ -1,6 +1,10 @@
 package network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -14,6 +18,10 @@ public class Pool {
 	public Pool()
 	throws IOException {
 		socket = new ServerSocket(1234);
+	}
+	
+	public Set<String> getClients() {
+		return clients;
 	}
 	
 	public void testAll() {
@@ -62,6 +70,18 @@ public class Pool {
 		String[] clientData = client.split(":");
 		if (test(clientData[0], Integer.parseInt(clientData[1]))) {
 			clients.add(client);
+		}
+	}
+	
+	public void action(Action action, Object object)
+	throws NumberFormatException, UnknownHostException, IOException {
+		for (String client : clients) {
+			if (action.equals(Action.CREATE_TABLE)) {
+				String[] clientData = client.split(":");
+				Socket clientSocket = new Socket(clientData[0], Integer.parseInt(clientData[1]));
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+				out.write(1);
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import table.Table;
 
+import network.Action;
 import network.Pool;
 
 public class Server {
@@ -17,11 +18,16 @@ public class Server {
 		clientPool = new Pool();
 	}
 	
+	public void addClient(String client) {
+		clientPool.addClient(client);
+	}
+	
 	public void createTable(Table table) {
 		if (!tables.containsKey(table.getName())) {
 			tables.put(table.getName(), table);
 			try {
 				Table.save(table);
+				clientPool.action(Action.CREATE_TABLE, table);
 			}
 			catch (IOException e) {
 				e.printStackTrace();
