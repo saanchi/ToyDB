@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import table.ColumnType;
 import table.Table;
 
 import network.Action;
@@ -41,7 +42,21 @@ public class Server {
 	}
 	
 	public static void main(String[] args)
-	throws IOException {
+	throws IOException, InterruptedException {
 		Server server = new Server();
+		
+		Thread.sleep(10000);
+		
+		server.createTable(createBasicTable());
+	}
+	
+	public static Table createBasicTable() {
+		Table table = new Table("user");
+		table.addColumn("fName", ColumnType.STRING);
+		table.addColumn("lName", ColumnType.STRING);
+		table.addColumn("age", ColumnType.INTEGER);
+		
+		return table;
+		
 	}
 }

@@ -3,28 +3,30 @@ package network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import util.Pair;
 
 public class ClientConnection
 implements Runnable {
 	String client;
-	
+
 	Socket connection;
-	
+
 	public ClientConnection(String client) {
 		this.client = client;
 	}
-	
+
 	public boolean testConnection() {
 		String[] clientData = client.split(":");
 		return testConnection(clientData[0], Integer.parseInt(clientData[1]));
 	}
-	
+
 	private boolean testConnection(String clientIP, int clientPort) {
 		Socket testSocket = null;
-		
+
 		boolean canConnect = true;
 		try {
 			testSocket = new Socket(clientIP, clientPort);
@@ -50,7 +52,7 @@ implements Runnable {
 
 		return canConnect;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -65,54 +67,28 @@ implements Runnable {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		/*new Thread(new Runnable() {
-			@Override
-			public void run() {
-			}
-		}).start();*/
 	}
-	
+
 	public void setConnection(Socket connection) {
 		this.connection = connection;
 	}
-	
-	public void action(final Action action, Object obj) {
-		if (action.equals(Action.CREATE_TABLE)) {
-			// Send
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if (action.equals(Action.CREATE_TABLE)) {
-						String[] clientData = client.split(":");
-						Socket clientSocket = null;
-						try {
-							clientSocket = new Socket(clientData[0], Integer.parseInt(clientData[1]));
-						}
-						catch (NumberFormatException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						catch (UnknownHostException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						PrintWriter out = null;
-						try {
-							out = new PrintWriter(clientSocket.getOutputStream(), true);
-						}
-						catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						out.write(1);
-					}
+
+	public void action(final Action action, final Object obj) {
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Pair<Action, Object> dataToSend = new Pair<Action, Object>(action, obj);
+				try {
+					ObjectOutputStream oos = new ObjectOutputStream(connection.getOutputStream());
+					oos.writeObject(dataToSend);
+					oos.flush();
 				}
-			}).start();
-		}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
 	}
 }
