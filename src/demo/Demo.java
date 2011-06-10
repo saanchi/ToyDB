@@ -16,11 +16,11 @@ public class Demo {
 		//Table userTable = loadSimpleDatabase();
 		// System.out.println(userTable.getColumnNames());
 
-		//saveData(1, 2);
+		//saveData(100, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		//saveData(200, 200);
-		//saveData(11010, 1231);
+		//saveData(1105410, 1235641);
 		
-		loadData(2);
+		loadData(0);
 		
 		//truncateTable();
 	}
@@ -29,7 +29,7 @@ public class Demo {
 	throws IOException {
 		Table userTable = new Table("user");
 		userTable.addColumn("firstName", ColumnType.INTEGER);
-		userTable.addColumn("lastName", ColumnType.INTEGER);
+		userTable.addColumn("lastName", ColumnType.STRING);
 
 		Table.save(userTable);
 	}
@@ -39,7 +39,7 @@ public class Demo {
 		return Table.load("user");
 	}
 
-	private static void saveData(int fName, int lName)
+	private static void saveData(int fName, String lName)
 	throws IOException, ClassNotFoundException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("firstName", fName);

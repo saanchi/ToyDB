@@ -50,9 +50,11 @@ implements Serializable {
 		int sizeOfRow = 0;
 		for (ColumnType columnType : columns.values()) {
 			switch (columnType) {
+			case STRING:
+				sizeOfRow += 8;
+				break;
 			case ID:
 			case INTEGER:
-			case STRING:
 				sizeOfRow += 4;
 				break;
 			case CHARACTER:
@@ -96,5 +98,13 @@ implements Serializable {
 		// Delete data
 		file = new File("resources/" + table.getName() + ".dta");
 		file.delete();
+		
+		// Delete string
+		file = new File("resources/" + table.getName() + ".str");
+		file.delete();
+	}
+
+	public Map<String, ColumnType> getColumns() {
+		return columns;
 	}
 }
