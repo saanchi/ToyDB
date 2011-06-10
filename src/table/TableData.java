@@ -1,9 +1,7 @@
 package table;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,28 +34,26 @@ public class TableData {
 
 	private void saveData(Map<String, Object> data)
 	throws IOException {
-		FileWriter fw = new FileWriter("resources/" + tableHeader.getName() + ".dta", true);
-		BufferedWriter out = new BufferedWriter(fw);
+		FileOutputStream fout = new FileOutputStream("resources/" + tableHeader.getName() + ".dta", true);
 		for (Object field : data.values()) {
-			out.write(Helper.intToCharArray((Integer)field));
+			fout.write(Helper.intToByteArray((Integer)field), 0, 4);
 		}
-		out.close();
+		fout.close();
 	}
 
 	private Map<String, Object> loadData(int id)
 	throws IOException {
-		FileReader fr = new FileReader("resources/" + tableHeader.getName() + ".dta");
-		BufferedReader in = new BufferedReader(fr);
+		FileInputStream fin = new FileInputStream("resources/" + tableHeader.getName() + ".dta");
 
 		Map<String, Object> data = new HashMap<String, Object>();
 
-		char[] buffer = new char[4];
-		in.skip(tableHeader.getSizeOfData() * id);
+		byte[] buffer = new byte[4];
+		fin.skip(tableHeader.getSizeOfData() * id);
 		for (String field : tableHeader.getColumnNames()) {
-			in.read(buffer, 0, 4);
-			data.put(field, Helper.charArrayToInt(buffer));
+			fin.read(buffer, 0, 4);
+			data.put(field, Helper.byteArrayToInt(buffer));
 		}
-		in.close();
+		fin.close();
 
 		return data;
 	}

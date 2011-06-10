@@ -11,14 +11,18 @@ import table.TableData;
 public class Demo {
 	public static void main(String args[])
 	throws IOException, ClassNotFoundException {
-		createSimpleDatabase();
+		//createSimpleDatabase();
 
-		// Table userTable = loadSimpleDatabase();
+		//Table userTable = loadSimpleDatabase();
 		// System.out.println(userTable.getColumnNames());
 
-		saveData();
-
-		loadData();
+		//saveData(1, 2);
+		//saveData(200, 200);
+		//saveData(11010, 1231);
+		
+		loadData(2);
+		
+		//truncateTable();
 	}
 
 	private static void createSimpleDatabase()
@@ -35,22 +39,28 @@ public class Demo {
 		return Table.load("user");
 	}
 
-	private static void saveData()
+	private static void saveData(int fName, int lName)
 	throws IOException, ClassNotFoundException {
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("firstName", 1);
-		data.put("lastName", 2);
+		data.put("firstName", fName);
+		data.put("lastName", lName);
 
 		Table userTable = loadSimpleDatabase();
 		TableData row = new TableData(userTable);
 		row.createNew(data);
 	}
 
-	private static void loadData()
+	private static void loadData(int id)
 	throws IOException, ClassNotFoundException {
 		Table userTable = loadSimpleDatabase();
 		TableData row = new TableData(userTable);
-		Map<String, Object> data = row.load(2);
+		Map<String, Object> data = row.load(id);
 		System.out.println(data);
+	}
+	
+	public static void truncateTable()
+	throws IOException, ClassNotFoundException {
+		Table userTable = loadSimpleDatabase();
+		Table.truncate(userTable);
 	}
 }

@@ -1,17 +1,21 @@
 package table.data;
 
 public class Helper {
-	public static char[] intToCharArray(int i) {
-		char[] charArray = new char[4];
-		charArray[3] = (char)(i << 24 >> 24);
-		charArray[2] = (char)(i << 16 >> 24);
-		charArray[1] = (char)(i << 8 >> 24);
-		charArray[0] = (char)(i >> 24);
+	public static byte[] intToByteArray(int i) {
+		byte[] byteArray = new byte[4];
+		byteArray[3] = (byte)(i << 24 >> 24);
+		byteArray[2] = (byte)(i << 16 >> 24);
+		byteArray[1] = (byte)(i << 8 >> 24);
+		byteArray[0] = (byte)(i >> 24);
 
-		return charArray;
+		return byteArray;
 	}
 
-	public static int charArrayToInt(char[] charArray) {
-		return (((charArray[0] << 8) + charArray[1] << 8) + charArray[2] << 8) + charArray[3];
+	public static int unsignedByte(byte thisByte) {
+		return thisByte & 0xFF;
+	}
+	
+	public static int byteArrayToInt(byte[] byteArray) {
+		return (((unsignedByte(byteArray[0]) << 8) + unsignedByte(byteArray[1]) << 8) + unsignedByte(byteArray[2]) << 8) + unsignedByte(byteArray[3]);
 	}
 }

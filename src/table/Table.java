@@ -1,5 +1,6 @@
 package table;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -85,5 +86,15 @@ implements Serializable {
 		out.writeObject(table);
 		out.flush();
 		out.close();
+	}
+	
+	public static void truncate(Table table) {
+		// Delete header
+		File file = new File("resources/" + table.getName() + ".hdr");
+		file.delete();
+		
+		// Delete data
+		file = new File("resources/" + table.getName() + ".dta");
+		file.delete();
 	}
 }
