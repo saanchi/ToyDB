@@ -19,23 +19,23 @@ extends Thread {
 	
 	@Override
 	public void run() {
-		try {
-			Socket accepted = listeningSocket.accept();
-			System.out.println(accepted.getRemoteSocketAddress().toString());
-			
-			ClientConnection newClient = new ClientConnection(accepted.getRemoteSocketAddress().toString());
-			newClient.setConnection(accepted);
-			
-			clients.add(newClient);
-			System.out.println(clients.size() + " clients connected");
-			
-			new Thread(newClient).start();
+		while (true) {
+			try {
+				Socket accepted = listeningSocket.accept();
+				System.out.println(accepted.getRemoteSocketAddress().toString());
+				
+				ClientConnection newClient = new ClientConnection(accepted.getRemoteSocketAddress().toString());
+				newClient.setConnection(accepted);
+				
+				clients.add(newClient);
+				System.out.println(clients.size() + " clients connected");
+				
+				new Thread(newClient).start();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		run();
 	}
 	
 	public void testAll() {

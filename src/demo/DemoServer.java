@@ -10,8 +10,7 @@ public class DemoServer {
 	public static void main(String[] args)
 	throws IOException {
 		Server server = new Server();
-		server.addClient("192.168.1.201:1234");
-		server.createTable(createBasicTable());
+		server.addClient("150.101.16.17:1234");
 	}
 	
 	public static Table createBasicTable() {
